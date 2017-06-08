@@ -1,0 +1,11 @@
+<h1>{{title}}</h1>
+<p>{{subtitle}}</p>
+{{#if authenticated}}
+  <p>Welcome authenticated user:</p>
+  <pre>
+    {{user}}
+  </pre>
+  <a class="button" href="/logoff">Keep me safe</a>
+{{else}}
+  <a class="button" href="/login">Login to App</a>
+{{/if}}

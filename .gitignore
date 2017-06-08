@@ -1,0 +1,19 @@
+# things never meant to be in git
+*.nogit*
+*.DS_Store
+*.zip
+[Tt]humbs.db
+
+# Dependency directory
+node_modules
+bower
+
+# log from npm
+npm-debug.log
+
+# generated
+build
+.tmp
+.#*
+.~*
+*.sublime-*

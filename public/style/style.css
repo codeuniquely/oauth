@@ -1,0 +1,12 @@
+.flexible {
+  display: flex;
+  justify-content: space-around;
+}
+.flexible form.centered {
+  margin: 50px 0;
+  max-width: 300px;
+  flex-direction: row;
+}
+.flexible form.centered fieldset {
+  flex-direction: column;
+}
