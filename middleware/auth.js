@@ -1,30 +1,25 @@
 //
-// OAuth2
+// our authentication middleware
 //
 
-var passport = require('passport');
-var OAuth2Strategy = require('passport-oauth2');
+var auth = function() {
 
-// Authorisation configuration (as per spec)
-var authConfig = {
-  authorizationURL: 'https://staging-auth.wallstreetdocs.com/oauth/authorize',
-  tokenURL: 'hhttps://staging-auth.wallstreetdocs.com/oauth/token',
-  clientID: 'coding_test',
-  clientSecret: 'bwZm5XC6HTlr3fcdzRnD',
-  callbackURL: 'http://localhost:3000'
+  // middleware functions
+  function mustbeAuthenticated(req, res, next) {
+    var user = req.user;
+    if (user) {
+      return next();
+    }
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    return res.redirect('/login');
+  }
+
+  return {
+    mustbeAuthenticated: mustbeAuthenticated
+  };
+
 };
 
-passport.use(new OAuth2Strategy(authConfig, function(accessToken, refreshToken, profile, done) {
-  done(null, profile);
-}));
-
-// middleware functions
-function mustbeAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  // denied. redirect to login
-  res.redirect('/login');
-}
-
-// exports.isAuthenticated = passport.authenticate('client-basic', { session : false });
+module.exports = auth;

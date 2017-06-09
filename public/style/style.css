@@ -1,12 +1,145 @@
-.flexible {
-  display: flex;
-  justify-content: space-around;
+/* home page - main features */
+header, footer {
+  position:fixed;
+  width:100%;
+  background:#717882;
+  color:#fff;
+  padding: 0 20px;
+  z-index: 3;
 }
-.flexible form.centered {
-  margin: 50px 0;
-  max-width: 300px;
-  flex-direction: row;
+body > header {
+  top: 0;
+  height:80px;
+  font-size:32px;
+  line-height:80px;
+  vertical-align: middle;
 }
-.flexible form.centered fieldset {
-  flex-direction: column;
+body > section {
+  margin:80px 0px 60px 0;
+}
+body > section pre {
+  border-left: none;
+  overflow: scroll;
+}
+body > footer {
+  bottom: 0;
+  height:40px;
+  line-height:40px;
+  font-size:18px;
+  vertical-align: middle;
+}
+
+/* used by the plgin */
+.frame {
+  position: relative;
+  display: inline-block;
+  /*
+  width:640px;
+  margin-left:-320px;
+  left:50%;
+  */
+  width:400px;
+  margin-left:0;
+  left: 0;
+
+  padding:10px;
+  background-color: lightgrey;
+  border:1px solid lightgrey;
+  border-radius: 4px;
+  box-shadow:rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+/* Pop-out box / feedback from */
+#feedback {
+  position: absolute;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+  z-index:1;
+}
+#feedback .feedback-box {
+  position: relative;
+  height: 340px;
+  width: 240px;
+}
+
+#feedback .feedback-box a#openclose {
+  position: relative;
+  top: 20px;
+  right: -220px;  /* 240px - 26px + 4px of border*/
+  width: 88px;
+  height: 26px;
+  display: inline-block;
+  font-size: 14px;
+  padding: 0 10px;
+  background-color: #9b4dca;
+  border: 1px solid #9b4dca;
+  color: white;
+  text-decoration: none;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 20% 100%;
+  transform: rotate(90deg);
+  transform-origin: 20% 100%;
+  box-shadow: 10px -10px 20px -11px rgba(0, 0, 0, 0.4);
+}
+#feedback .feedback-box a#openclose:hover {
+  background-color: #606c76;
+}
+#feedback .feedback-box.thanks a#openclose, .feedback-box.thanks a#openclose:hover {
+  background-color: rgb(103,141,197);
+  border-color: rgb(103,141,197);
+  cursor: default;
+}
+#feedback .feedback-box .box {
+  background-color: rgb(245,230,255);
+  padding: 10px;
+}
+#feedback .feedback-box h2 {
+  text-align: center;
+}
+#feedback .feedback-box textarea {
+  width:200px;
+  padding:0;
+  margin: 20px 10px 10px 10px;
+}
+#feedback .feedback-box a#sendfeedback {
+  margin-left: 10px;
+}
+.feedback-box .character-counter {
+  padding-left: 10px;
+  display: inline-block;
+  width: 100%;
+}
+#feedback .feedback-box .logo {
+  float: left;
+  padding-left: 10px;
+  margin-top: 2px;
+}
+#feedback .feedback-box .logo img {
+  border-radius: 50%;
+}
+
+#feedback .feedback-box .buts {
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
+/* hide thing on first render */
+.cloaked {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .frame {
+    width:500px;
+    margin-left:-125px;
+    left:25%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .frame {
+    width:640px;
+    margin-left:-160px;
+    left:25%;
+  }
 }

@@ -7,27 +7,28 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var status = require('http-status');
+var debug = require('debug')('oauth:app');
 
-// hook in babel js ????
-// import { default as index, login, user } from 'routes';
-
-// some simple routing
-var index = require('./routes/index');
-var login = require('./routes/login');
-var logout = require('./routes/logout');
-var user = require('./routes/user');
+var hbs = require('hbs');
 
 // paths
 var publicPath = path.resolve(__dirname, 'public');
 var viewPath = path.resolve(__dirname, 'views');
+var partialsPath = path.resolve(__dirname, 'views', 'partials');
 
 var app = express();
+var router = express.Router();
+
+// register partials - would do them them all in one go
+// but there is only one
+hbs.registerPartials(partialsPath);
 
 // view engine setup
 app.set('views', viewPath);
 app.set('view engine', 'hbs');
 
-// middleware
+// configure third party middleware
 app.use(favicon(path.join(publicPath, 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -35,51 +36,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(publicPath));
 
-// Use express session support since OAuth2 requires it
-app.use(session({
-  secret: 'Custom Secret Session Key',
-  saveUninitialized: true,
-  resave: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// load the config file
+var config = require('./config');
 
-// Use routes
-app.use('/', index);
-app.use('/login', login);
-app.use('/logout', logout);
-app.use('/user', user);
+// passport / oauth middleware wrapers
+require('./middleware/passport')(app, passport, session, config.auth);
 
-// passport serialize and deserialize user funtions
-passport.serializeUser(function(user, done) {
-  // placeholder for custom user serialization
-  // null is for errors
-  done(null, user);
-});
+// authentication middleware
+var auth = require('./middleware/auth')();
 
-passport.deserializeUser(function(user, done) {
-  // placeholder for custom user deserialization.
-  // maybe you are going to get the user from mongo by id?
-  // null is for errors
-  done(null, user);
-});
+// load all the controllers
+require('./controllers')(app, router, debug, status, passport, config, express, auth, hbs);
 
-// Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// force initial load onto '/dashboard'
+// app.use(function(req,res) {
+//   res.redirect('/dashboard');
+// });
 
-// error handler
-app.use(function(err, req, res /* , next */ ) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+// handle errors (last)
+require('./middleware/errors')(app,status);
 
 module.exports = app;
