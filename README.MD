@@ -7,6 +7,7 @@ Directory structure
 ===================
 The importanyt files in the project are listed below:
 
+```
 root
   .vscode                  - config for debugging in 'visual studio' code
   .bin
@@ -35,6 +36,7 @@ root
 
   app.js                   - main application
   config.js                - configuration information for various parts of the app
+```
 
 Installing the Code
 ===================
